@@ -1,0 +1,18 @@
+﻿@model IEnumerable<SC_701_PAW_Lunes.Models.Category>
+<h2>Crear Categoria</h2>
+<form method="post">
+    <label>ID de Categoria</label>
+    <input type="number" asp-for="Id_Cat" class="form-control">
+
+    <label>Nombre</label>
+    <input type="text" asp-for="Nombre" class="form-control">
+
+    <label>Descripción</label>
+    <textarea asp-for="Descripcion" class="form-control"></textarea>
+
+    <label>Tallas</label>
+    <input type="text" asp-for="Tallas" class="form-control">
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+<a href="@Url.Action("Categorias")">Cancelar</a>

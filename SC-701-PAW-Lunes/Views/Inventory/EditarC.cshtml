@@ -1,0 +1,28 @@
+﻿@model SC_701_PAW_Lunes.Models.Category
+
+<h2>Editar Categoria</h2>
+
+<form method="post" asp-action="Editar">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <input type="text" asp-for="Nombre" class="form-control">
+        <span class="text-danger" asp-validation-for="Nombre"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Descripcion</label>
+        <input type="text" asp-for="Descripcion" class="form-control">
+        <span class="text-danger" asp-validation-for="Descripcion"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Tallas</label>
+        <input type="text" asp-for="Tallas" class="form-control">
+        <span class="text-danger" asp-validation-for="Tallas"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+<a href="@Url.Action("Categorias")">Cancelar</a>

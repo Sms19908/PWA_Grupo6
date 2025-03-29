@@ -21,7 +21,13 @@ namespace SC_701_PAW_Lunes.Controllers
             return View(await _context.Inventories.ToListAsync());
         }
 
-       //Vista de un articulo de inventario
+        //Listado de las categorias
+        public async Task<IActionResult> Categorias()
+        {
+            return View(await _context.Categories.ToListAsync());
+        }
+
+        //Vista de un articulo de inventario
 
         public async Task<IActionResult> Detalle(int id)
         {
@@ -30,7 +36,7 @@ namespace SC_701_PAW_Lunes.Controllers
             return View(inventory);
         }
 
-        //Creacion
+        //Creacion Inventario
         public IActionResult Crear()
         {
             return View();
@@ -48,7 +54,25 @@ namespace SC_701_PAW_Lunes.Controllers
             return View(inventory);
         }
 
-        //Editar
+        //Creacion Categorias
+        public IActionResult CrearC()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CrearC(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(category);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(category);
+        }
+
+        //Editar Inventario
 
         public async Task<IActionResult> Editar(int id)
         {
@@ -71,13 +95,47 @@ namespace SC_701_PAW_Lunes.Controllers
             return View(inventory);
         }
 
-        //Eliminar
+        //Editar Categoria
+
+        public async Task<IActionResult> EditarC(int id)
+        {
+            var category = await _context.Inventories.FindAsync(id);
+            if (category == null) return NotFound();
+            return View(category);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarC(int id, Category category)
+        {
+            if (id != category.Id_Cat) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                _context.Update(category);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(category);
+        }
+
+        //Eliminar Inventario
         public async Task<IActionResult> Eliminar(int id)
         {
-            var zapato = await _context.Inventories.FindAsync(id);
-            if (zapato == null) return NotFound();
+            var inventory = await _context.Inventories.FindAsync(id);
+            if (inventory == null) return NotFound();
 
-            _context.Inventories.Remove(zapato);
+            _context.Inventories.Remove(inventory);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        //Eliminar Category
+        public async Task<IActionResult> EliminarC(int id)
+        {
+            var category = await _context.Inventories.FindAsync(id);
+            if (category == null) return NotFound();
+
+            _context.Inventories.Remove(category);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

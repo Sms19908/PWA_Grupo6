@@ -1,0 +1,13 @@
+﻿@model SC_701_PAW_Lunes.Models.Category
+
+<div class="container text-center">
+    <h2 class="text-danger">¿Estás seguro de que quieres eliminar este zapato?</h2>
+
+    <p><strong>Nombre:</strong> @Model.Nombre</p>
+    <p><strong>Marca:</strong> @Model.Descripcion</p>
+
+    <form method="post" action="@Url.Action("EliminarConfirmado", new { id = Model.Id_Cat })">
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="@Url.Action("Index")" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

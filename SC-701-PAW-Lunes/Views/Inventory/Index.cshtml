@@ -1,1 +1,35 @@
-﻿
+﻿@model IEnumerable<SC_701_PAW_Lunes.Models.Inventory>
+<h2>Inventario de productos</h2>
+<a class="btn btn-success" href="@Url.Action("Crear")">Agregar Producto</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>ID de Categoria</th>
+            <th>Marca</th>
+            <th>Precio</th>
+            <th>Descripcion</th>
+            <th>Cantidad</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    @foreach (var inventory in Model)
+    {
+        <tr>
+            <td>@inventory.Nombre</td>
+            <td>@inventory.Id_Cat</td>
+            <td>@inventory.Marca</td>
+            <td>@inventory.Precio</td>
+            <td>@inventory.Descripcion</td>
+            <td>@inventory.Cantidad</td>
+            <td>
+                <a href="@Url.Action("Editar", new { id = inventory.Id_Inv })">Editar</a>
+                <a href="@Url.Action("Eliminar", new { id = inventory.Id_Inv })">Eliminar</a>
+            </td>
+        </tr>
+    }
+</table>
+
+<a href="@Url.Action("Categorias")>Ver Categorias</a>
+
+<!-- Vista Administrador-->

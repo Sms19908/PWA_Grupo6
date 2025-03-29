@@ -1,0 +1,25 @@
+﻿@model IEnumerable<SC_701_PAW_Lunes.Models.Inventory>
+
+<h2>Crear Producto</h2>
+<form method="post">
+    <label>Nombre</label>
+    <input type="text" asp-for="Nombre" class="form-control">
+
+    <label>ID de Categoria</label>
+    <input type="number" asp-for="Id_Cat" class="form-control">
+
+    <label>Marca</label>
+    <input type="text" asp-for="Marca" class="form-control">
+
+    <label>Precio</label>
+    <input type="number" asp-for="Precio" class="form-control">
+
+    <label>Descripción</label>
+    <textarea asp-for="Descripcion" class="form-control"></textarea>
+
+    <label>Cantidad</label>
+    <input type="number" asp-for="Cantidad" class="form-control">
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+<a href="@Url.Action("Index")">Cancelar</a>
