@@ -13,5 +13,15 @@ var app = builder.Build();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
-app.MapControllerRoute(name: "default", pattern: "{controller=Invetory}/{action=Index}/{id?}");
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<PAWDbContext>();
+    db.Database.Migrate(); // Applies any pending migrations
+}
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.Run();

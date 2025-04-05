@@ -7,7 +7,7 @@ namespace SC_701_PAW_Lunes.Data
     {
         public PAWDbContext(DbContextOptions options) : base(options){}
 
-        public DbSet<Inventory> Inventories { get; set; }
-        public DbSet<Category> Categories { get; set;}
+        public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<Category> Category { get; set;}
     }
 }

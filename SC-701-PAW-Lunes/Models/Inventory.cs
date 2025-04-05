@@ -4,9 +4,10 @@ namespace SC_701_PAW_Lunes.Models
 {
     public class Inventory
     {
+        [Key]
         public int Id_Inv { get; set; } //Pk de inventario
 
-        public int Id_Cat { get; set; } //Fk de categorias
+        public int Id_Cat { get; set; }
 
         public string Nombre { get; set; }
 

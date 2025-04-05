@@ -18,20 +18,20 @@ namespace SC_701_PAW_Lunes.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Inventories.ToListAsync());
+            return View(await _context.Inventory.ToListAsync());
         }
 
         //Listado de las categorias
         public async Task<IActionResult> Categorias()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await _context.Category.ToListAsync());
         }
 
         //Vista de un articulo de inventario
 
         public async Task<IActionResult> Detalle(int id)
         {
-            var inventory = await _context.Inventories.FindAsync(id);
+            var inventory = await _context.Inventory.FindAsync(id);
             if (inventory == null) return NotFound();
             return View(inventory);
         }
@@ -76,7 +76,7 @@ namespace SC_701_PAW_Lunes.Controllers
 
         public async Task<IActionResult> Editar(int id)
         {
-            var inventory = await _context.Inventories.FindAsync(id);
+            var inventory = await _context.Inventory.FindAsync(id);
             if (inventory == null) return NotFound();
             return View(inventory);
         }
@@ -99,7 +99,7 @@ namespace SC_701_PAW_Lunes.Controllers
 
         public async Task<IActionResult> EditarC(int id)
         {
-            var category = await _context.Inventories.FindAsync(id);
+            var category = await _context.Inventory.FindAsync(id);
             if (category == null) return NotFound();
             return View(category);
         }
@@ -121,10 +121,10 @@ namespace SC_701_PAW_Lunes.Controllers
         //Eliminar Inventario
         public async Task<IActionResult> Eliminar(int id)
         {
-            var inventory = await _context.Inventories.FindAsync(id);
+            var inventory = await _context.Inventory.FindAsync(id);
             if (inventory == null) return NotFound();
 
-            _context.Inventories.Remove(inventory);
+            _context.Inventory.Remove(inventory);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -132,10 +132,10 @@ namespace SC_701_PAW_Lunes.Controllers
         //Eliminar Category
         public async Task<IActionResult> EliminarC(int id)
         {
-            var category = await _context.Inventories.FindAsync(id);
+            var category = await _context.Inventory.FindAsync(id);
             if (category == null) return NotFound();
 
-            _context.Inventories.Remove(category);
+            _context.Inventory.Remove(category);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
