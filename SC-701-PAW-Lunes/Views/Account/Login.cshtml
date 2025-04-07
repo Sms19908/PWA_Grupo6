@@ -1,34 +1,31 @@
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Login";
 }
 <style>
 
 
 </style>
 
-<div class="grid " >
+<div class="grid ">
 
 
     <div class="row mx-auto">
-
-        <form class="col-12 ">
-
+        <form action="/Account/Login" method="post" class="col-12">
+            @Html.AntiForgeryToken()
             <div class="form-group my-2">
                 <label for="exampleInputEmail1">Correo electrónico</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingresa tu email">
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingresa tu email" name="Email">
             </div>
             <div class="form-group my-2">
                 <label for="exampleInputPassword1">Contraseña</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="Password">
             </div>
             <button type="submit" class="btn btn-primary">Iniciar sesíón</button>
         </form>
-
-        <
     </div>
 
-   
+
 
 
 </div>
