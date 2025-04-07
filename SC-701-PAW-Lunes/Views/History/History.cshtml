@@ -1,0 +1,33 @@
+﻿@model IEnumerable<SC_701_PAW_Lunes.Models.History>
+
+@{
+    Layout = "_Layout";
+}
+
+<h2>Historial de pedidos</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Fecha del pedido</th>
+            <th>Productos del pedido</th>
+            <th>Cantidad por producto</th>
+            <th>Monto por producto</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    @foreach (var history in Model)
+    {
+        <tr>
+            <td>@history.Fecha</td>
+            <td>@history.DetallesProductos</td>
+            <td>@history.DetallesCantidad</td>
+            <td>@history.DetallesMontos</td>
+            <td>@history.Total</td>
+        </tr>
+    }
+</table>
+
+<a href="@Url.Action("Cart")>Ver Carrito</a>
+
+<!-- Vista Administrador-->
+<!-- añadir en la vista de usuario, boton de añadir al carrito o favoritos-->

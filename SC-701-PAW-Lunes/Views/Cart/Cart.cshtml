@@ -1,0 +1,36 @@
+﻿@model IEnumerable<SC_701_PAW_Lunes.Models.Cart>
+
+@{
+    Layout = "_Layout";
+}
+
+<h2>Carrito de compras</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Monto</th>
+        </tr>
+    </thead>
+    @foreach (var cart in Model)
+    {
+        <tr>
+            <td>@cart.NombreProducto</td>
+            <td>@cart.Cantidad</td>
+            <td>@cart.Monto</td>
+            <td>
+                
+                <a href="@Url.Action("Eliminar", new { id = cart.Id_Inv })">Eliminar</a>
+            </td>
+        </tr>
+    }
+</table>
+
+<div>
+    <a>Total del carrito:</a>
+</div>
+
+<a href="@Url.Action("Catalogo")>Ver Catalogo</a>
+
+<!-- Vista Administrador-->
