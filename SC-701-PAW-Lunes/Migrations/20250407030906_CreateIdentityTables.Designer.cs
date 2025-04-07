@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SC_701_PAW_Lunes.Data;
 
@@ -11,9 +12,11 @@ using SC_701_PAW_Lunes.Data;
 namespace SC_701_PAW_Lunes.Migrations
 {
     [DbContext(typeof(PAWDbContext))]
-    partial class PAWDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250407030906_CreateIdentityTables")]
+    partial class CreateIdentityTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
