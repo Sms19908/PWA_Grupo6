@@ -13,5 +13,8 @@ namespace SC_701_PAW_Lunes.Data
         public DbSet<Inventory> Inventory { get; set; }
         public DbSet<Category> Category { get; set;}
         public DbSet<User> Users { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<Favorites> Favorites { get; set; }
+        public DbSet<History> Histories { get; set; }
     }
 }
