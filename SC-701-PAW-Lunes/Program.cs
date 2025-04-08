@@ -4,8 +4,22 @@ using Microsoft.Extensions.Logging;
 using SC_701_PAW_Lunes.Data;
 using SC_701_PAW_Lunes.Services;
 using SC_701_PAW_Lunes.Models;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Cambio de idioma
+builder.Services.AddLocalization();
+var idiomasSoportados = new[]
+{
+    new CultureInfo("en-US"),
+    new CultureInfo("es-ES"),
+};
+var localizationOptiones = new RequestLocalizationOptions();
+localizationOptiones.SupportedCultures = idiomasSoportados;
+localizationOptiones.SupportedUICultures = idiomasSoportados;
+localizationOptiones.SetDefaultCulture ("es-ES");
+localizationOptiones.ApplyCurrentCultureToResponseHeaders = true;
 
 // Configurar DBContext con SQL Server
 builder.Services.AddDbContext<PAWDbContext>(options =>
@@ -49,6 +63,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRequestLocalization(localizationOptiones);
 
 // Apply migrations
 using (var scope = app.Services.CreateScope())

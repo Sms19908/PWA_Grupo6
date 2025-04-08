@@ -37,7 +37,12 @@
                         </li>
                     }
 
-
+                    <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" method="post">
+                        <select name="culture" onchange="this.form.submit();">
+                            <option value="en-US">English</option>
+                            <option value="es-ES">Español</option>
+                        </select>
+                    </form>
                 </ul>
             </div>
         </div>
