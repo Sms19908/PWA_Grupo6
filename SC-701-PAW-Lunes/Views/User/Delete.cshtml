@@ -1,0 +1,20 @@
+﻿@using SC_701_PAW_Lunes.Models
+@model User
+
+<h1>Eliminar Usuario</h1>
+
+<p>¿Está seguro de que desea eliminar el siguiente usuario?</p>
+
+<div>
+    <p><strong>Nombre de Usuario:</strong> @Model.UserName</p>
+    <p><strong>Nombre Completo:</strong> @Model.NombreCompleto</p>
+    <p><strong>Correo:</strong> @Model.Email</p>
+    <p><strong>Teléfono:</strong> @Model.PhoneNumber</p>
+    <p><strong>Rol:</strong> @Model.Rol</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

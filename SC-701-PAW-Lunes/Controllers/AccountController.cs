@@ -54,7 +54,6 @@ namespace SC_701_PAW_Lunes.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -74,8 +73,6 @@ namespace SC_701_PAW_Lunes.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(
@@ -125,6 +122,10 @@ namespace SC_701_PAW_Lunes.Controllers
             {
                 return RedirectToAction(nameof(InventoryController.Index), "Inventory");
             }
+        }
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }
