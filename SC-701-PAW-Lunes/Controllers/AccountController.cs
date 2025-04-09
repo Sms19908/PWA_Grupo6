@@ -29,20 +29,21 @@ namespace SC_701_PAW_Lunes.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+
+            
             if (ModelState.IsValid)
             {
                 var user = new User
                 {
                     UserName = model.Email,
                     Email = model.Email,
-                    NombreCompleto = model.FullName // Using the additional property
+                    NombreCompleto = model.FullName 
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    // Optional: Sign in the user immediately after registration
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
                     return RedirectToAction("Index", "Inventory");
@@ -54,7 +55,6 @@ namespace SC_701_PAW_Lunes.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
