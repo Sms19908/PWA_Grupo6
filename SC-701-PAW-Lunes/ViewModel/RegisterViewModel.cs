@@ -23,5 +23,9 @@ namespace SC_701_PAW_Lunes.ViewModel
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Account Type")]
+        public string SelectedRole { get; set; }
     }
 }
