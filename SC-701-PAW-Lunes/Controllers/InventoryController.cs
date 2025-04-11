@@ -2,22 +2,28 @@
 using Microsoft.EntityFrameworkCore;
 using SC_701_PAW_Lunes.Models;
 using SC_701_PAW_Lunes.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SC_701_PAW_Lunes.Controllers
 {
+
+    [Authorize]
     public class InventoryController: Controller
     {
         private readonly PAWDbContext _context;
+        private readonly ILogger<InventoryController> _logger;
 
-        public InventoryController(PAWDbContext context)
+        public InventoryController(PAWDbContext context, ILogger<InventoryController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         //Listado del inventario
 
         public async Task<IActionResult> Index()
         {
+            _logger.LogInformation($"User {User.Identity.Name} accessed Inventory");
             return View(await _context.Inventory.ToListAsync());
         }
 

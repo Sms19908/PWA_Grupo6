@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SC_701_PAW_Lunes.Models;
@@ -7,6 +8,7 @@ using SC_701_PAW_Lunes.ViewModel;
 
 namespace SC_701_PAW_Lunes.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -21,16 +23,23 @@ namespace SC_701_PAW_Lunes.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-
-            
             if (ModelState.IsValid)
             {
                 var user = new User
@@ -59,6 +68,7 @@ namespace SC_701_PAW_Lunes.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -70,8 +80,9 @@ namespace SC_701_PAW_Lunes.Controllers
             return View();
         }
 
-
         [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -79,11 +90,15 @@ namespace SC_701_PAW_Lunes.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(
-                    model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                    model.Email,
+                    model.Password,
+                    model.RememberMe,
+                    lockoutOnFailure: false);
 
                 if (result.Succeeded)
                 {
-                    return RedirectToLocal(returnUrl);
+                    // Always redirect to Inventory/Index if no returnUrl specified
+                    return LocalRedirect(returnUrl ?? Url.Action("Index", "Inventory"));
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
@@ -93,8 +108,7 @@ namespace SC_701_PAW_Lunes.Controllers
         }
 
         [HttpPost]
-        /*        [ValidateAntiForgeryToken]*/
-        [ResponseCache(NoStore = true)]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
 
@@ -113,18 +127,6 @@ namespace SC_701_PAW_Lunes.Controllers
             Response.Headers["Expires"] = "0";
 
             return RedirectToAction("Login", "Account");
-        }
-
-        private IActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction(nameof(InventoryController.Index), "Inventory");
-            }
         }
     }
 }
