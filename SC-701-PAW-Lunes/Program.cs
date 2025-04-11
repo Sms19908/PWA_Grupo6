@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using SC_701_PAW_Lunes.Data;
 using SC_701_PAW_Lunes.Services;
 using SC_701_PAW_Lunes.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,12 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<PAWDbContext>()
 .AddDefaultTokenProviders();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("ADMIN"));
+});
 
 // Cookie configuration
 builder.Services.ConfigureApplicationCookie(options =>
@@ -44,6 +51,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
 
 app.UseStaticFiles();
 app.UseRouting();
@@ -78,8 +86,9 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Inventory}/{action=Index}/{id?}");
 
 app.Run();
