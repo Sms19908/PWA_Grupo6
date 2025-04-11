@@ -1,0 +1,35 @@
+﻿@model List<SC_701_PAW_Lunes.Models.CartItem>
+@{
+    ViewData["Title"] = "Confirmar Compra";
+}
+
+<h2>Resumen de Compra</h2>
+
+<form asp-action="CheckoutConfirm" method="post">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nombre</td>
+                    <td>@item.Cantidad</td>
+                    <td>₡@item.Precio</td>
+                    <td>₡@item.Subtotal</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Total a pagar: ₡@ViewBag.Total</h4>
+
+    <button type="submit" class="btn btn-success">Confirmar Compra</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Volver al carrito</a>
+</form>
