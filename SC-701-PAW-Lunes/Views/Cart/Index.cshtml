@@ -1,0 +1,41 @@
+﻿@model List<SC_701_PAW_Lunes.Models.CartItem>
+@{
+    ViewData["Title"] = "Carrito de Compras";
+}
+
+<h2>Carrito de Compras</h2>
+
+@if (!Model.Any())
+{
+    <p>Tu carrito está vacío.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nombre</td>
+                    <td>₡@item.Precio</td>
+                    <td>@item.Cantidad</td>
+                    <td>₡@item.Subtotal</td>
+                    <td>
+                        <a href="@Url.Action("Remove", "Cart", new { id = item.ProductoId })" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Total: ₡@ViewBag.Total</h4>
+}
