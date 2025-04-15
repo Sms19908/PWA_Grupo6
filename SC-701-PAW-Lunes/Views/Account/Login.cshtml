@@ -20,6 +20,10 @@
 
 <div class="grid ">
 
+    @if (@ViewData["userMessage"] != null) {
+        <span class="text-warning">@ViewData["userMessage"]</span>
+    }
+
 
     <div class="row mx-auto">
         <form action="/Account/Login" method="post" class="col-12">

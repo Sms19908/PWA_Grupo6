@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SC_701_PAW_Lunes.Models;
 using SC_701_PAW_Lunes.ViewModel;
 
@@ -36,41 +37,93 @@ namespace SC_701_PAW_Lunes.Controllers
             return View();
         }
 
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = new User
+                    if (ModelState.IsValid)
                 {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    NombreCompleto = model.FullName 
-                };
+                    var user = new User
+                    {
+                        UserName = model.Email,
+                        Email = model.Email,
+                        NombreCompleto = model.FullName,
+                        Active = "USER".ToLower().Equals(model.SelectedRole.ToLower()),
+                        PasswordRecoveryMode = false
+                    };
 
-                var result = await _userManager.CreateAsync(user, model.Password);
+                    var result = await _userManager.CreateAsync(user, model.Password);
 
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    if (result.Succeeded)
+                    {
+                        // Assign the selected role to the user
+                        var roleResult = await _userManager.AddToRoleAsync(user, model.SelectedRole);
 
-                    return RedirectToAction("Index", "Inventory");
+                        if (!roleResult.Succeeded)
+                        {
+                            // If role assignment fails, add errors but keep the user created
+                            foreach (var error in roleResult.Errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
+                            return View(model);
+                        }
+
+                        if (user.Active)
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return RedirectToAction("Index", "Inventory");
+
+                        }
+                        else
+                        {
+                            TempData["userMessage"] = "Ahora un administrador debe activar tu cuenta para poder acceder correctamente como administrador";
+                            return RedirectToAction("Login", "Account");
+                        }
+
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                return View(model);
+
+
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error when registering user", ex);
+                return View(model);
+            }
+           
+        }
 
-            return View(model);
+        private List<SelectListItem> GetRoleOptions()
+        {
+            return new List<SelectListItem>
+             {
+                new SelectListItem { Value = "USER", Text = "Regular User" },
+                new SelectListItem { Value = "ADMIN", Text = "Administrator" }
+            };
         }
 
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
+
+            if (TempData["UserMessage"] != null)
+            {
+                ViewData["UserMessage"] = TempData["UserMessage"];
+                TempData.Keep("UserMessage"); 
+            }
+
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -89,6 +142,14 @@ namespace SC_701_PAW_Lunes.Controllers
 
             if (ModelState.IsValid)
             {
+
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null && !user.Active)
+                {
+                    TempData["userMessage"] = "Usuario aun no ha sido activado, pide a un administrador activar tu cuenta";
+                    return RedirectToAction("Login", "Account");
+                }
+
                 var result = await _signInManager.PasswordSignInAsync(
                     model.Email,
                     model.Password,
@@ -97,11 +158,12 @@ namespace SC_701_PAW_Lunes.Controllers
 
                 if (result.Succeeded)
                 {
-                    // Always redirect to Inventory/Index if no returnUrl specified
+                    TempData["userMessage"] = "Usuario o contrase�a son incorrectos, intenta otra vez";
                     return LocalRedirect(returnUrl ?? Url.Action("Index", "Inventory"));
                 }
 
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                TempData["userMessage"] = "Usuario o contrase�a son incorrectos, intenta otra vez";
+                return RedirectToAction("Login", "Account");
             }
 
             return View(model);

@@ -10,5 +10,9 @@ namespace SC_701_PAW_Lunes.Models
         public string SelectedRole { get; set; }
         public string Direccion { get; set; }
 
+        public Boolean Active { get; set; } = true;
+
+        public Boolean PasswordRecoveryMode { get; set; } = false;
+
     }
 }
