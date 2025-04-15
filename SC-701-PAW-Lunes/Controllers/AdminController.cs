@@ -56,7 +56,7 @@ namespace SC_701_PAW_Lunes.Controllers
             if (user.UserName == User.Identity.Name)
             {
                 TempData["ErrorMessage"] = "No puedes eliminar tu propio usuario";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(UserAdministration));
             }
 
             var result = await _userManager.DeleteAsync(user);
@@ -70,7 +70,7 @@ namespace SC_701_PAW_Lunes.Controllers
                 TempData["ErrorMessage"] = "Error al eliminar el usuario";
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(UserAdministration));
         }
 
         [HttpPost]

@@ -8,6 +8,10 @@ namespace SC_701_PAW_Lunes.ViewModel
         [Display(Name = "Full Name")]
         public string FullName { get; set; }
 
+        [Required(ErrorMessage = "Direccion is required")]
+        [Display(Name = "Direccion")]
+        public string Direccion { get; set; }
+
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email address")]
         [Display(Name = "Email")]
