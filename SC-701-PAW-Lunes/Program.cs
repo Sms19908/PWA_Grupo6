@@ -12,10 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<PAWDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Simplified Identity configuration
+// Configuración simplificada de Identity
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
-    // Password settings
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
@@ -31,7 +30,7 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("ADMIN"));
 });
 
-// Cookie configuration
+// Configuración de cookies
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
@@ -50,22 +49,29 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
+//  Servicios para carrito y sesiones
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ShoppingCartService>();
 
+var app = builder.Build();
 
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Apply migrations
+//  Activar el uso de sesiones
+app.UseSession();
+
+// Aplicar migraciones
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<PAWDbContext>();
     db.Database.Migrate();
 }
 
-// Combine all initialization into a single scope
+// Inicialización adicional
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -86,7 +92,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-
+// Rutas
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Inventory}/{action=Index}/{id?}");
