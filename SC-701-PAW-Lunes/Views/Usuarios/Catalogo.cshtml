@@ -5,7 +5,6 @@
 }
 
 <h2>Inventario de productos</h2>
-<a class="btn btn-success" href="@Url.Action("Crear")">Agregar Producto</a>
 <table class="table">
     <thead>
         <tr>
@@ -28,14 +27,13 @@
             <td>@inventory.Descripcion</td>
             <td>@inventory.Cantidad</td>
             <td>
-                <a href="@Url.Action("Editar", new { id = inventory.Id_Inv })">Editar</a>
-                <a href="@Url.Action("Eliminar", new { id = inventory.Id_Inv })">Eliminar</a>
+                <a href="@Url.Action("Favoritos", new { id = inventory.Id_Inv })">Agregar favoritos</a>
                 <a class="btn btn-primary btn-sm" href="@Url.Action("Add", "Cart", new { id = inventory.Id_Inv })">Agregar al carrito</a>
             </td>
         </tr>
     }
 </table>
 
-<a href="@Url.Action("Categorias")">Ver Categorias</a>
+<a href="/Cart/Index.cshtml">Ver Carritos</a>  <!---\Cart\Index.cshtml opcion2--->
 
-<!-- Vista Administrador-->
+<!-- Vista Usuarios-->
