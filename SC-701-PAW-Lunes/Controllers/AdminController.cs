@@ -33,7 +33,9 @@ namespace SC_701_PAW_Lunes.Controllers
                     Email = user.Email,
                     FullName = user.NombreCompleto,
                     Roles = string.Join(", ", roles),
-                    IsCurrentUser = user.UserName == User.Identity.Name
+                    IsCurrentUser = user.UserName == User.Identity.Name,
+                    Active = user.Active,
+                    PasswordRecoveryMode = user.PasswordRecoveryMode
                 });
             }
 
@@ -70,5 +72,40 @@ namespace SC_701_PAW_Lunes.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult>Activate(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Prevent activating current user
+            if (user.UserName == User.Identity.Name)
+            {
+                TempData["ErrorMessage"] = "No puedes activar tu propio usuario";
+                return RedirectToAction(nameof(Index));
+            }
+
+            user.Active = true;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation($"User {user.Email} activated by {User.Identity.Name}");
+                TempData["SuccessMessage"] = "Usuario activado correctamente";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Error al activar el usuario";
+            }
+
+            return RedirectToAction(nameof(UserAdministration));
+        }
+
+
     }
 }

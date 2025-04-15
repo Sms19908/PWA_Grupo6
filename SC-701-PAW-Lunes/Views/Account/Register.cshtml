@@ -22,33 +22,34 @@
 
     <div class="form-group mb-2">
         <label asp-for="Email" class="mb-2">Correo electrónico</label>
-        <input asp-for="Email" class="form-control" />
+        <input asp-for="Email" class="form-control" name="Email" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-2">
         <label asp-for="FullName" class="mb-2">Nombre completo</label>
-        <input asp-for="FullName" class="form-control" />
+        <input asp-for="FullName" class="form-control" name="FullName" />
         <span asp-validation-for="FullName" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-2">
-        <label asp-for="SelectedRole" class="mb-2">Account Type</label>
-        <select asp-for="SelectedRole" asp-items="Model.RoleOptions" class="form-control">
-            <option value="">-- Select Role --</option>
+        <label asp-for="SelectedRole"  class="mb-2">Tipo de cuenta</label>
+        <select class="form-control" name="SelectedRole">
+            <option value="USER" selected>Usuario</option>
+            <option value="ADMIN">Administrador (otro administrador debe activar tu cuenta)</option>
         </select>
         <span asp-validation-for="SelectedRole" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-2">
         <label asp-for="Password" class="mb-2">Contraseña</label>
-        <input asp-for="Password" class="form-control" />
+        <input asp-for="Password" class="form-control" name="Password" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-2">
         <label asp-for="ConfirmPassword" class="mb-2">Repetir Contraseña</label>
-        <input asp-for="ConfirmPassword" class="form-control" />
+        <input asp-for="ConfirmPassword" class="form-control" name="ConfirmPassword" />
         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
 
