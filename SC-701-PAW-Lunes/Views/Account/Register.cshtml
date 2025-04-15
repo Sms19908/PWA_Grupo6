@@ -17,6 +17,10 @@
 
 <h2>Registro de nuevos usuarios</h2>
 
+@if (@ViewData["userError"] != null ) {
+<span class="text-danger"> @ViewData["userError"] </span>
+}
+
 <form action="/Account/Register" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -30,6 +34,12 @@
         <label asp-for="FullName" class="mb-2">Nombre completo</label>
         <input asp-for="FullName" class="form-control" name="FullName" />
         <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="Direccion" class="mb-2">Direccion</label>
+        <input asp-for="Direccion" class="form-control" name="Direccion" />
+        <span asp-validation-for="Direccion" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-2">
