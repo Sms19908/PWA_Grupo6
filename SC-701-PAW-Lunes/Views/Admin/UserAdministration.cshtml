@@ -42,19 +42,29 @@
                         <td>@user.FullName</td>
                         <td>@user.Roles</td>
                         <td>
-                            @if (!user.IsCurrentUser)
+                            @if (user.IsCurrentUser)
                             {
-                                <form asp-action="Delete" asp-route-id="@user.Id" method="post"
-                                      onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
+                                <span class="text-muted">Usuario actual</span>
+                            }
+                            else if (user.Active)
+                            {
+                                <form method="post" action="@Url.Action("Delete", "Admin", new { id = user.Id })">
                                     @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-danger btn-sm">
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Estás seguro de eliminar este usuario?');">
                                         <i class="fas fa-trash-alt"></i> Eliminar
                                     </button>
                                 </form>
                             }
-                            else
+                            else if (!user.Active)
                             {
-                                <span class="text-muted">Usuario actual</span>
+                                <form method="post" action="@Url.Action("Activate", "Admin", new { id = user.Id })">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-warning btn-sm"
+                                            onclick="return confirm('¿Estás seguro de activar este usuario?');">
+                                        <i class="fas fa-check-circle"></i> Activar cuenta
+                                    </button>
+                                </form>
                             }
                         </td>
                     </tr>

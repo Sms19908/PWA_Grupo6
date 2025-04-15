@@ -34,7 +34,9 @@ namespace SC_701_PAW_Lunes.Data
                     UserName = adminEmail,
                     Email = adminEmail,
                     NombreCompleto = "System Administrator",
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    Active = true,
+                    PasswordRecoveryMode = false
                 };
 
                 string adminPassword = "12341234";
@@ -57,7 +59,9 @@ namespace SC_701_PAW_Lunes.Data
                     UserName = userEmail,
                     Email = userEmail,
                     NombreCompleto = "Regular User",
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    Active = true,
+                    PasswordRecoveryMode = false
                 };
 
                 string userPassword = "12341234";

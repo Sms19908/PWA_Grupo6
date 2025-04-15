@@ -6,5 +6,9 @@ namespace SC_701_PAW_Lunes.Models
     {
         public String NombreCompleto { get; set; }
 
+        public Boolean Active { get; set; } = true;
+
+        public Boolean PasswordRecoveryMode { get; set; } = false;
+
     }
 }
