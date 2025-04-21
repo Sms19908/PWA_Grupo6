@@ -211,6 +211,8 @@ namespace SC_701_PAW_Lunes.Migrations
 
                     b.HasKey("Id_Inv");
 
+                    b.HasIndex("Id_Cat");
+
                     b.ToTable("Inventory");
                 });
 
@@ -351,6 +353,22 @@ namespace SC_701_PAW_Lunes.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SC_701_PAW_Lunes.Models.Inventory", b =>
+                {
+                    b.HasOne("SC_701_PAW_Lunes.Models.Category", "Categoria")
+                        .WithMany("Inventarios")
+                        .HasForeignKey("Id_Cat")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
+                });
+
+            modelBuilder.Entity("SC_701_PAW_Lunes.Models.Category", b =>
+                {
+                    b.Navigation("Inventarios");
                 });
 #pragma warning restore 612, 618
         }
