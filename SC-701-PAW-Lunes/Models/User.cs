@@ -4,9 +4,9 @@ namespace SC_701_PAW_Lunes.Models
 {
     public class User : IdentityUser
     {
-        public String NombreCompleto { get; set; } //Username
+        public String NombreCompleto { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; } //PasswordHash
+        public string Password { get; set; }
         public string SelectedRole { get; set; }
         public string Direccion { get; set; }
 

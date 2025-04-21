@@ -12,5 +12,7 @@ namespace SC_701_PAW_Lunes.Models
         public string Descripcion { get; set; }
 
         public string Tallas { get; set; }
+
+        public List<Inventory> Inventarios { get; set; }
     }
 }

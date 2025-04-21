@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<PAWDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Configuración simplificada de Identity
+// Configuraciï¿½n simplificada de Identity
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     options.Password.RequireDigit = false;
@@ -30,7 +30,7 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("ADMIN"));
 });
 
-// Configuración de cookies
+// Configuraciï¿½n de cookies
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
@@ -71,7 +71,7 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
-// Inicialización adicional
+// Inicializaciï¿½n adicional
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

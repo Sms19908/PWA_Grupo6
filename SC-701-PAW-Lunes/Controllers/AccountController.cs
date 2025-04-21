@@ -14,13 +14,16 @@ namespace SC_701_PAW_Lunes.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<AccountController> _logger;
 
         public AccountController(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -48,70 +51,64 @@ namespace SC_701_PAW_Lunes.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             try
             {
-                    if (ModelState.IsValid)
+                var user = new User
                 {
-                    var user = new User
+                    UserName = model.Email,
+                    Email = model.Email,
+                    NombreCompleto = model.FullName,
+                    Active = string.Equals(model.SelectedRole, "USER", StringComparison.OrdinalIgnoreCase),
+                    PasswordRecoveryMode = false,
+                    Direccion = model.Direccion,
+                    Password = model.Password,
+                    SelectedRole = model.SelectedRole,
+                };
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
                     {
-                        UserName = model.Email,
-                        Email = model.Email,
-                        NombreCompleto = model.FullName,
-                        Active = "USER".ToLower().Equals(model.SelectedRole.ToLower()),
-                        PasswordRecoveryMode = false,
-                        Direccion = model.Direccion,
-                        Password = model.Password,
-                        SelectedRole = model.SelectedRole,
-                    };
-
-                    var result = await _userManager.CreateAsync(user, model.Password);
-
-                    if (result.Succeeded)
-                    {
-
-                        // Assign the selected role to the user
-                        var roleResult = await _userManager.AddToRoleAsync(user, model.SelectedRole);
-
-                        if (!roleResult.Succeeded)
-                        {
-                            foreach (var error in roleResult.Errors)
-                            {
-                                ModelState.AddModelError(string.Empty, error.Description);
-                            }
-                            return View(model);
-                        }
-
-                        if ("USER".ToLower().Equals(model.SelectedRole.ToLower()))
-                        {
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-                            return RedirectToAction("Index", "Inventory");
-
-                        }
-                        else
-                        {
-                            TempData["userMessage"] = "Ahora un administrador debe activar tu cuenta para poder acceder correctamente como administrador";
-                            return RedirectToAction("Login", "Account");
-                        }
-
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
-
-                    if (result.Errors.Any())
-                    {
-                        TempData["userError"] = result.Errors.First().Description;
-                        return RedirectToAction("Register", "Account");
-                    }
+                    return View(model);
                 }
 
-                return View(model);
+                // Asignar el rol al usuario
+                var roleResult = await _userManager.AddToRoleAsync(user, model.SelectedRole);
+                if (!roleResult.Succeeded)
+                {
+                    foreach (var error in roleResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(model);
+                }
 
+                // Si es usuario normal, redirigir al inventario
+                if (string.Equals(model.SelectedRole, "USER", StringComparison.OrdinalIgnoreCase))
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Inventory");
+                }
 
+                // Si es administrador, necesita activación
+                TempData["userMessage"] = "Ahora un administrador debe activar tu cuenta para poder acceder correctamente como administrador.";
+                return RedirectToAction("Login", "Account");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error when registering user", ex);
+                _logger.LogError($"Error al registrar usuario: {ex.Message}");
+                ModelState.AddModelError(string.Empty, "Ocurrió un error inesperado al intentar registrarte. Inténtalo nuevamente.");
                 return View(model);
             }
-           
         }
 
         private List<SelectListItem> GetRoleOptions()
