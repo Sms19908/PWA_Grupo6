@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SC_701_PAW_Lunes.Models
 {
@@ -18,5 +19,7 @@ namespace SC_701_PAW_Lunes.Models
 
         public int Cantidad { get; set; }
 
+        [ForeignKey("Id_Cat")]
+        public Category Categoria { get; set; }
     }
 }

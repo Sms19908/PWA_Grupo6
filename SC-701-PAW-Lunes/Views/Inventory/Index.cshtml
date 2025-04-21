@@ -3,6 +3,17 @@
 @{
     Layout = "_Layout";
 }
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory App - @ViewData["Title"]</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS (optional) -->
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
 
 <h2>Inventario de productos</h2>
 <a class="btn btn-success" href="@Url.Action("Crear")">Agregar Producto</a>
