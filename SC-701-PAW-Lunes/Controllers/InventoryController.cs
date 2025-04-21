@@ -145,6 +145,5 @@ namespace SC_701_PAW_Lunes.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
     }
 }

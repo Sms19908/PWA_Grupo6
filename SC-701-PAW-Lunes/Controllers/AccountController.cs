@@ -96,7 +96,7 @@ namespace SC_701_PAW_Lunes.Controllers
                 if (string.Equals(model.SelectedRole, "USER", StringComparison.OrdinalIgnoreCase))
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Inventory");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 // Si es administrador, necesita activación
@@ -149,8 +149,6 @@ namespace SC_701_PAW_Lunes.Controllers
 
             if (ModelState.IsValid)
             {
-
-
                 var user = await _userManager.FindByNameAsync(model.Email);
 
                 if (user == null)
@@ -161,7 +159,7 @@ namespace SC_701_PAW_Lunes.Controllers
 
                 if (user != null && !user.Active)
                 {
-                    TempData["userMessage"] = "Usuario aun no ha sido activado, pide a un administrador activar tu cuenta";
+                    TempData["userMessage"] = "Usuario aún no ha sido activado, pide a un administrador activar tu cuenta";
                     return RedirectToAction("Login", "Account");
                 }
 
@@ -173,11 +171,11 @@ namespace SC_701_PAW_Lunes.Controllers
 
                 if (!result.Succeeded)
                 {
-                    TempData["userMessage"] = "Usuario o contrase�a son incorrectos, intenta otra vez";
+                    TempData["userMessage"] = "Usuario o contraseña incorrectos, intenta otra vez";
                     return RedirectToAction("Login", "Account");
                 }
 
-                return LocalRedirect(returnUrl ?? Url.Action("Index", "Inventory"));
+                return RedirectToAction("Index", "Home");
             }
 
             return View(model);
